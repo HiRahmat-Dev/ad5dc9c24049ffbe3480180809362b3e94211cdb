@@ -1,4 +1,7 @@
 :root {
+  --main-font: -apple-system, BlinkMacSystemFont, 'Montserrat', 'Roboto', 'Open Sans',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   --primary-color: #f9423a;
   --secondary-color: #a23530;
   --main-text-color: #424749;
@@ -40,4 +43,25 @@ code {
 h1, h2, h3, h4, h5, p {
   margin: 0;
   padding: 0;
+}
+
+.App {
+  position: relative;
+}
+
+.app-bar, .app-body {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+}
+
+.app-bar {
+  z-index: 5;
+  border-bottom: 1px solid var(--outline-border-color);
+}
+
+.app-body {
+  overflow: auto;
 }

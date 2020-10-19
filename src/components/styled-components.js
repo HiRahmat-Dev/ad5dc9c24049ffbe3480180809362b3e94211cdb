@@ -26,4 +26,10 @@ export const Container = styled.div`
   padding: 0 var(--xl-text);
 `;
 
+export const ContainerFlex = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 var(--xl-text);
+`;
+
 export default styled;
