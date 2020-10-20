@@ -88,15 +88,15 @@ function App() {
           top: `${appBarHeight}px`,
           height: `${appSize - appBarHeight}px`
         }}
-        onScroll={(e) => {
-          var st = window.pageYOffset || e.target.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
-          if (st > lastScrollTop){
-            setBtnGroup(false);
-          } else {
-            setBtnGroup(true);
-          }
-          lastScrollTop = st <= 0 ? 0 : st;
-        }}
+        // onScroll={(e) => {
+        //   var st = window.pageYOffset || e.target.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+        //   if (st > lastScrollTop){
+        //     setBtnGroup(false);
+        //   } else {
+        //     setBtnGroup(true);
+        //   }
+        //   lastScrollTop = st <= 0 ? 0 : st;
+        // }}
       >
         <DateText>
           <Container>

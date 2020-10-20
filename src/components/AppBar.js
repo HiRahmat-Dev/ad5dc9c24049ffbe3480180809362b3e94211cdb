@@ -41,7 +41,7 @@ const AppBarCont = styled.div`
   }
   > div:last-child {
     width: 100%;
-    padding: var(--md-text) 0;
+    padding: var(--md-text) var(--xs-text);
     > div {
       display: flex;
       align-items: center;
