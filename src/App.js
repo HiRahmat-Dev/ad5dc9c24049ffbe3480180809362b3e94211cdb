@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import styled, { Container, ContainerFlex, TextHead } from './components/styled-components';
+import styled, { Container, ContainerFlex, TextHead, TextCaps, TextSmall } from './components/styled-components';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import moment from 'moment';
 
 import AppBar from './components/AppBar';
 import AppBody from './components/AppBody';
@@ -7,9 +9,11 @@ import ButtonGroup from './components/ButtonGroup';
 import Card from './components/Card';
 import FloatingCart from './components/FloatingCart';
 
-const menus = ['Lunch', 'Dinner'];
+import { menus, calBtnSize } from './settings';
+import { rangeDates } from './utils';
 
 const cards = [];
+const twoWeeks = rangeDates(new Date(), new Date(Date.now() + 12096e5));
 
 var lastScrollTop = 0;
 
@@ -17,6 +21,8 @@ function App() {
   const [appBarHeight, setAppBarHeight] = useState(0);
   const [appSize, setAppSize] = useState(0);
   const [btnGroup, setBtnGroup] = useState(true);
+
+  const [dateNow, setDateNow] = useState('')
   const [buttonActive, setButtonActive] = useState('Lunch');
 
   useEffect(() => {
@@ -33,15 +39,37 @@ function App() {
     appBody.addEventListener('scroll', () => {
       setAppBarHeight(appBar.offsetHeight);
     })
+
+    setDateNow('Choose date')
   }, [])
   
   return (
     <div className="App">
       <AppBar>
         <CalendarBar>
-          <Container>
-            Calendar
-          </Container>
+          <div>
+            { twoWeeks.map((value, index) => {
+              const day = moment(value).format('ddd');
+              const date = moment(value).format('DD');
+              return (
+                <CalButton key={index}
+                  disabled={ day === 'Sun' || day === 'Sat' }
+                  className={
+                    (dateNow === moment(value).format('dddd, DD MMMM yyyy') ?
+                      'cal-button-active' : '') +
+                    (day === 'Sun' || day === 'Sat' ?
+                      ' disabled' : '')
+                  }
+                  onClick={() => {
+                    setDateNow(moment(value).format('dddd, DD MMMM yyyy'));
+                  }}
+                >
+                  <TextCaps>{ day }</TextCaps>
+                  <TextSmall><strong>{ date }</strong></TextSmall>
+                </CalButton>
+              );
+            })}
+          </div>
         </CalendarBar>
         <ButtonGroupCont
           className={'button-group-container' + (btnGroup ? '' : ' button-group-hidden')}
@@ -54,6 +82,7 @@ function App() {
           </Container>
         </ButtonGroupCont>
       </AppBar>
+
       <AppBody
         style={{
           top: `${appBarHeight}px`,
@@ -71,7 +100,7 @@ function App() {
       >
         <DateText>
           <Container>
-            <TextHead>Kamis, 13 Maret 2019</TextHead>
+            <TextHead>{ dateNow }</TextHead>
           </Container>
         </DateText>
         <div>
@@ -91,8 +120,37 @@ const ContainerFlexColumn = styled(ContainerFlex)`
 `;
 
 const CalendarBar = styled.div`
-  padding: var(--md-text) 0;
+  padding: 0 var(--xs-text) var(--sm-text);
   border-bottom: 1px solid var(--outline-border-color);
+  overflow: auto;
+  > div {
+    display: inline-flex;
+    flex-wrap: nowrap;
+  }
+`;
+
+const CalButton = styled(ButtonBase)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--xs-text)!important;
+  font-family: var(--default-font);
+  width: ${calBtnSize}px;
+  height: ${calBtnSize}px;
+  border-radius: 50% !important;
+  transition: .2s;
+  &.cal-button-active {
+    background-color: var(--main-text-color) !important;
+    * {
+      color: white !important
+    }
+  }
+  &.disabled {
+    * {
+      color: var(--background-color) !important;
+    }
+  }
 `;
 
 const ButtonGroupCont = styled.div`
