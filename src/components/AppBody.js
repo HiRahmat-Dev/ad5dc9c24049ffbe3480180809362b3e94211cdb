@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function AppBody({ children, style }) {
+function AppBody({ children, style, onScroll }) {
   return (
     <div
       className="app-body"
-      style={style && style}  
+      style={style && style}
+      onScroll={onScroll} 
     >
       <AppBodyCont>
         { children }
@@ -16,7 +17,6 @@ function AppBody({ children, style }) {
 
 const AppBodyCont = styled.div`
   position: relative;
-  padding: var(--lg-text) 0;
   overflow: auto;
 `;
 

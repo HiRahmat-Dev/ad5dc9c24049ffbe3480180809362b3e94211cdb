@@ -8,8 +8,8 @@ function ButtonGroup({ options, setActive, active }) {
       {options && options.map((value, index) => {
         return (
           <StyledButton key={index}
-            className={active === value ? 'button-active' : ''}
-            size="small"
+            className={'button-group' + (active === value ? ' button-group-active' : '')}
+            size="medium"
             onClick={() => setActive(value)}
           >
             { value }
@@ -35,9 +35,15 @@ const StyledButton = styled(Button)`
     border-top-right-radius: 4px !important;
     border-bottom-right-radius: 4px !important;
   }
-  &.button-active {
-    background: linear-gradient(#424749, #424749);
+  &.button-group {
+    background: linear-gradient(white, white);
+    color: var(--sub-text-color);
+    box-shadow: inset 0 0 0 1.4px var(--outline-border-color);
+  }
+  &.button-group-active {
+    background: linear-gradient(var(--main-text-color), var(--main-text-color));
     color: white;
+    box-shadow: none;
   }
 `;
 
