@@ -1,2 +1,2 @@
-export const menus = ['Lunch', 'Dinner'];
+export const categories = ['Lunch', 'Dinner'];
 export const calBtnSize = 50;

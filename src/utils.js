@@ -12,3 +12,7 @@ export const rangeDates = (startDate, endDate) => {
   }
   return dates;
 }
+
+export const currencyFormat = (value, currency = 'Rp') => {
+  return currency + ' ' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
