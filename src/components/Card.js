@@ -4,35 +4,37 @@ import { MdStar, MdStarHalf, MdAdd } from 'react-icons/md';
 
 import Button from './Button';
 
-function Card() {
+import { currencyFormat } from '../utils';
+
+function Card({ data }) {
   return (
     <CardCont>
       <div className="card-image">
         <img
-          src="https://images.unsplash.com/photo-1550951945-660a41587436?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=80"
+          src={ data?.img && data.img }
           alt="foods"
         />
       </div>
       <div className="card-desc">
         <div className="desc-details">
           <Rating>
-            <p>4.5</p>
+            <p>{ data?.rating && Number(data.rating).toPrecision(2) }</p>
             <Stars>
-              <MdStar />
-              <MdStar />
-              <MdStar />
-              <MdStar />
-              <MdStarHalf />
+              { data?.rating && !data.rating.toString().includes('.') ?
+                [...Array(Math.floor(Number(data.rating)))].map((_, index) => <MdStar key={index} />) :
+                [...Array(Math.ceil(Number(data.rating)))].map((_, index) => index + 1 < Math.ceil(Number(data.rating)) ?
+                  <MdStar key={index} /> : <MdStarHalf key={index} />)
+              }
             </Stars>
           </Rating>
           <Title>
-            <TextHead>Roasted Chicken with Scrambled Egg</TextHead>
-            <SubTextSmall>by Kulina <strong>&middot;</strong> Uptown Lunch</SubTextSmall>
+            <TextHead>{ data?.title && data.title }</TextHead>
+            <SubTextSmall>by Kulina <strong>&middot;</strong> Uptown { data?.category && data.category }</SubTextSmall>
           </Title>
         </div>
         <div className="desc-price">
           <div className="price">
-            <TextPrice>Rp 35,000</TextPrice>
+            <TextPrice>{ data?.price && currencyFormat(data.price) }</TextPrice>
           </div>
           <div className="action">
             <AddButton

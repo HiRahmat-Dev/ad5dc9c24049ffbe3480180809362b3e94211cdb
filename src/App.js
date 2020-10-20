@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled, { Container, ContainerFlex, TextHead, TextCaps, TextSmall } from './components/styled-components';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import moment from 'moment';
@@ -9,17 +10,19 @@ import ButtonGroup from './components/ButtonGroup';
 import Card from './components/Card';
 import FloatingCart from './components/FloatingCart';
 
-import { menus, calBtnSize } from './settings';
+import { categories, calBtnSize } from './settings';
 import { rangeDates } from './utils';
 
-const cards = [];
 const twoWeeks = rangeDates(new Date(), new Date(Date.now() + 12096e5));
 
-var lastScrollTop = 0;
+// var lastScrollTop = 0;
 
 function App() {
+  const { menus } = useSelector(state => state);
+
   const [appBarHeight, setAppBarHeight] = useState(0);
   const [appSize, setAppSize] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [btnGroup, setBtnGroup] = useState(true);
 
   const [dateNow, setDateNow] = useState('')
@@ -51,6 +54,7 @@ function App() {
             { twoWeeks.map((value, index) => {
               const day = moment(value).format('ddd');
               const date = moment(value).format('DD');
+
               return (
                 <CalButton key={index}
                   disabled={ day === 'Sun' || day === 'Sat' }
@@ -75,7 +79,7 @@ function App() {
           className={'button-group-container' + (btnGroup ? '' : ' button-group-hidden')}
         >
           <Container>
-            <ButtonGroup options={menus}
+            <ButtonGroup options={categories}
               setActive={setButtonActive}
               active={buttonActive}
             />
@@ -105,7 +109,12 @@ function App() {
         </DateText>
         <div>
           <ContainerFlexColumn>
-            { cards }
+            { menus.map((el, index) => (
+              <Card
+                key={index}
+                data={el}
+              />
+            ))}
           </ContainerFlexColumn>
         </div>
         <FloatingCart />
@@ -173,9 +182,5 @@ const DateText = styled.div`
   padding: var(--md-text) 0;
   margin-top: var(--md-text);
 `;
-
-for (let i = 0; i < 4; i++) {
-  cards.push(<Card key={i}></Card>)
-}
 
 export default App;
