@@ -1,17 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { HiChevronRight } from 'react-icons/hi';
+import { useSpring, animated} from 'react-spring';
 
 import styled, { Container, TextHead, TextSmall } from './styled-components';
+import { useSelector } from 'react-redux';
 
 function FloatingCard() {
+  const { cart } = useSelector(state => state);
+
+  const props = useSpring({
+    to: {opacity: 1, bottom: '0%'},
+    from: {opacity: 0, bottom: '-100%'}
+  });
+
   return (
-    <ContainerFixed>
+    <ContainerFixed style={props}>
       <CartButton>
         <div>
           <div className="cart-desc">
-            <TextHead>5 Items | Rp 125,000</TextHead>
+            <TextHead>{ cart.count } Items <span>|</span> Rp { cart.totalPrices }</TextHead>
             <TextSmall>Termasuk ongkos kirim</TextSmall>
           </div>
           <div className="cart-action">
@@ -24,7 +33,7 @@ function FloatingCard() {
   );
 }
 
-const ContainerFixed = styled(Container)`
+const ContainerFixed = styled(animated(Container))`
   position: fixed;
   left: 0;
   bottom: 0;
@@ -43,6 +52,14 @@ const CartButton = styled(ButtonBase)`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .cart-desc {
+      text-align: left;
+      > h2 {
+        span {
+          font-weight: normal;
+        }
+      }
+    }
     .cart-action {
       display: flex;
       align-items: center;

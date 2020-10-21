@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled, { Container, ContainerFlex, TextHead, TextCaps, TextSmall } from './components/styled-components';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import moment from 'moment';
+import { setItems } from './redux/actions';
 
 import AppBar from './components/AppBar';
 import AppBody from './components/AppBody';
@@ -18,7 +19,7 @@ const twoWeeks = rangeDates(new Date(), new Date(Date.now() + 12096e5));
 // var lastScrollTop = 0;
 
 function App() {
-  const { menus } = useSelector(state => state);
+  const { menus, cart } = useSelector(state => state);
 
   const [appBarHeight, setAppBarHeight] = useState(0);
   const [appSize, setAppSize] = useState(0);
@@ -27,6 +28,8 @@ function App() {
 
   const [dateNow, setDateNow] = useState('')
   const [buttonActive, setButtonActive] = useState('Lunch');
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const viewSize = window.innerHeight;
@@ -113,11 +116,14 @@ function App() {
               <Card
                 key={index}
                 data={el}
+                onAddClick={() => {
+                  dispatch(setItems(el))
+                }}
               />
             ))}
           </ContainerFlexColumn>
         </div>
-        <FloatingCart />
+        { cart.count > 0 && <FloatingCart /> }
       </AppBody>
     </div>
   );
