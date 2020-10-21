@@ -6,7 +6,7 @@
   --secondary-color: #a23530;
   --main-text-color: #424749;
   --sub-text-color: #6e7679;
-  --background-color: #e2e4e4;
+  --background-color: rgba(41, 41, 41, 0.178);
   --outline-border-color: #f1f1f2;
   --default-shadow: 0 8px 10px rgba(10, 31, 68, .1);
   --xs-text: 8px;
