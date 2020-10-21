@@ -8,6 +8,7 @@ export default ({children, iconOnly = false, startIcon, endIcon, size = "medium"
     {iconOnly ?
       <IconButton
         size={size}
+        {...rest}
       >
         { children }
       </IconButton> :

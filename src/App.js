@@ -1,30 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import styled, { Container, ContainerFlex, TextHead, TextCaps, TextSmall } from './components/styled-components';
+import styled, { Container, ContainerFlex, TextHead, TextCaps, TextSmall, TextHeadBig } from './components/styled-components';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import moment from 'moment';
-import { setItems } from './redux/actions';
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import { setItems, setFilteredLocation, setSelectedLocation, toggleModal } from './redux/actions';
 
 import AppBar from './components/AppBar';
 import AppBody from './components/AppBody';
 import ButtonGroup from './components/ButtonGroup';
 import Card from './components/Card';
 import FloatingCart from './components/FloatingCart';
+import Modal from './components/Modal';
+import Input from './components/Input';
+import CardLocation from './components/CardLocation';
 
 import { categories, calBtnSize } from './settings';
 import { rangeDates } from './utils';
 
 const twoWeeks = rangeDates(new Date(), new Date(Date.now() + 12096e5));
 
-// var lastScrollTop = 0;
+var lastScrollTop = 0;
 
 function App() {
-  const { menus, cart } = useSelector(state => state);
+  const { menus, cart, modal, locations } = useSelector(state => state);
 
   const [appBarHeight, setAppBarHeight] = useState(0);
+  const [btnGroupHeight, setBtnGroupHeight] = useState(0);
   const [appSize, setAppSize] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [btnGroup, setBtnGroup] = useState(true);
+  const [searchValue, setSearch] = useState('');
+  const [filteredLocations, setFiltered] = useState([]);
 
   const [dateNow, setDateNow] = useState('')
   const [buttonActive, setButtonActive] = useState('Lunch');
@@ -32,12 +39,13 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const viewSize = window.innerHeight;
     const appBar = document.querySelector('.app-bar');
     const appBody = document.querySelector('.app-body');
+    const btnGroupCont = document.querySelector('.button-group-container');
 
-    setAppSize(viewSize);
+    setAppSize(window.innerHeight);
     setAppBarHeight(appBar.offsetHeight);
+    setBtnGroupHeight(btnGroupCont.clientHeight);
 
     window.addEventListener('resize', () => {
       setAppSize(window.innerHeight);
@@ -46,9 +54,17 @@ function App() {
       setAppBarHeight(appBar.offsetHeight);
     })
 
-    setDateNow('Choose date')
+    setDateNow(moment(new Date()).format('dddd, DD MMMM yyyy'))
   }, [])
   
+  useEffect(() => {
+    if (searchValue.length >= 3) {
+      let filtered = locations?.data && locations.data.filter((a) => a.title.toLowerCase().includes(searchValue.toLowerCase()));
+      filtered.slice(0, 5);
+      setFiltered(filtered);
+    }
+  }, [locations, searchValue])
+
   return (
     <div className="App">
       <AppBar>
@@ -78,8 +94,33 @@ function App() {
             })}
           </div>
         </CalendarBar>
+      </AppBar>
+
+      <AppBody
+        style={{
+          top: `${appBarHeight}px`,
+          height: `${appSize - appBarHeight}px`,
+          paddingTop: 50
+        }}
+        onScroll={(e) => {
+          var st = window.pageYOffset || e.target.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+          if (st > lastScrollTop){
+            setBtnGroup(false);
+          } else {
+            setBtnGroup(true);
+          }
+          lastScrollTop = st <= 0 ? 0 : st;
+        }}
+      >
         <ButtonGroupCont
-          className={'button-group-container' + (btnGroup ? '' : ' button-group-hidden')}
+          // className={'button-group-container' + (btnGroup ? '' : ' button-group-hidden')}
+          className="button-group-container"
+          style={{
+            position: 'fixed',
+            top: `${btnGroup ? appBarHeight : appBarHeight - 60}px`,
+            zIndex: 15,
+            transition: '.7s'
+          }}
         >
           <Container>
             <ButtonGroup options={categories}
@@ -88,23 +129,6 @@ function App() {
             />
           </Container>
         </ButtonGroupCont>
-      </AppBar>
-
-      <AppBody
-        style={{
-          top: `${appBarHeight}px`,
-          height: `${appSize - appBarHeight}px`
-        }}
-        // onScroll={(e) => {
-        //   var st = window.pageYOffset || e.target.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
-        //   if (st > lastScrollTop){
-        //     setBtnGroup(false);
-        //   } else {
-        //     setBtnGroup(true);
-        //   }
-        //   lastScrollTop = st <= 0 ? 0 : st;
-        // }}
-      >
         <DateText>
           <Container>
             <TextHead>{ dateNow }</TextHead>
@@ -125,6 +149,35 @@ function App() {
         </div>
         { cart.count > 0 && <FloatingCart /> }
       </AppBody>
+      
+      <Modal settings={{ appBarHeight, appSize, btnGroupHeight }}
+        modalShow={ modal }
+      >
+        <Container>
+          <TextHeadBig>Cek makanan yang tersedia <br/> di lokasi kamu!</TextHeadBig>
+          <Input
+            icon={<FaMapMarkerAlt />} id="location" style={{marginTop: 14}} full type="text"
+            placeholder="Search location (min. 3 letters)"
+            value={searchValue} onChange={(e) => {
+              setSearch(e.target.value)
+            }}
+          />
+          <LocationResult>
+            {filteredLocations.length > 0 ? filteredLocations.map((el, index) => {
+              return (
+                <CardLocation data={el} key={index}
+                  onClick={() => {
+                    dispatch(setSelectedLocation(el));
+                    dispatch(toggleModal(false));
+                  }}
+                />
+              )
+            }) : <div style={{ textAlign: 'center', fontWeight: 600 }} >
+              { searchValue.length > 0 ? 'Result not found.' : 'Type a location.' }
+            </div>}
+          </LocationResult>
+        </Container>
+      </Modal>
     </div>
   );
 }
@@ -188,5 +241,11 @@ const DateText = styled.div`
   padding: var(--md-text) 0;
   margin-top: var(--md-text);
 `;
+
+const LocationResult = styled.div`
+  margin-top: 36px;
+  width: 100%;
+`;
+
 
 export default App;

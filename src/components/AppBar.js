@@ -1,10 +1,17 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { animated, useTransition } from 'react-spring';
 import styled, { TextCaps, TextHead } from './styled-components';
 import { MdArrowBack, MdKeyboardArrowDown } from 'react-icons/md';
+
+import { toggleModal } from '../redux/actions'
 
 import Button from './Button';
 
 function AppBar({ children, customButton }) {
+  const { locations } = useSelector(state => state);
+  const dispatch = useDispatch();
+
   return (
     <div className="app-bar">
       <AppBarCont>
@@ -18,8 +25,13 @@ function AppBar({ children, customButton }) {
         </div>
         <div>
           <TextCaps>alamat pengantaran</TextCaps>
-          <div>
-            <TextHead>Tokopedia Tower</TextHead>
+          <div onClick={() => dispatch(toggleModal(true))}>
+            <TextHead>
+              {locations?.selected?.title ? 
+                locations.selected.title :
+                'Choose Location'
+              }
+            </TextHead>
             <Button iconOnly size="small">
               <MdKeyboardArrowDown className="down-button" />
             </Button>
