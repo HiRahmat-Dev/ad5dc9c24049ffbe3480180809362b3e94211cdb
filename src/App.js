@@ -63,6 +63,9 @@ function App() {
       filtered.slice(0, 5);
       setFiltered(filtered);
     }
+    if (searchValue.length === 0) {
+      setFiltered([]);
+    }
   }, [locations, searchValue])
 
   return (
@@ -157,7 +160,7 @@ function App() {
           <TextHeadBig>Cek makanan yang tersedia <br/> di lokasi kamu!</TextHeadBig>
           <Input
             icon={<FaMapMarkerAlt />} id="location" style={{marginTop: 14}} full type="text"
-            placeholder="Search location (min. 3 letters)"
+            placeholder="Search location (eg: Kulina, Tangerang)"
             value={searchValue} onChange={(e) => {
               setSearch(e.target.value)
             }}
@@ -173,7 +176,7 @@ function App() {
                 />
               )
             }) : <div style={{ textAlign: 'center', fontWeight: 600 }} >
-              { searchValue.length > 0 ? 'Result not found.' : 'Type a location.' }
+              { searchValue.length > 2 ? 'Result not found' : 'Type a location min. 3 letters' }
             </div>}
           </LocationResult>
         </Container>

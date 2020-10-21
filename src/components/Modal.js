@@ -11,12 +11,22 @@ function Modal({ children, settings, modalShow = false }) {
   const dispatch = useDispatch();
 
   return (
-    <ModalCont>
-      <ModalBg />
+    <ModalCont
+      style={{
+        visibility: modalShow ? 'visible' : 'hidden'
+      }}
+    >
+      <ModalBg
+        style={{
+          opacity: modalShow ? 1 : 0,
+          transition: '.3s'
+        }}
+      />
       <ModalBody
         style={{
-          top: `${settings.appBarHeight - settings.btnGroupHeight}px`,
-          height: `${settings.appSize - settings.appBarHeight + settings.btnGroupHeight}px`
+          top: modalShow ? `${settings.appBarHeight - settings.btnGroupHeight}px` : `100%`,
+          height: `${settings.appSize - settings.appBarHeight + settings.btnGroupHeight}px`,
+          transition: '.5s'
         }}
       >
         <div className="head-modal">
