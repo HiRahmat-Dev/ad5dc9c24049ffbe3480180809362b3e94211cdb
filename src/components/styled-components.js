@@ -3,9 +3,9 @@ import styled from 'styled-components';
 export const TextSmall = styled.p`
   color: var(--main-text-color);
   font-size: var(--md-text);
-  font-weight: normal;
+  font-weight: 600;
   letter-spacing: -2;
-  `;
+`;
 
 export const SubTextSmall = styled(TextSmall)`
   color: var(--sub-text-color);
@@ -17,6 +17,11 @@ export const TextHead = styled.h2`
   font-size: var(--lg-text);
   font-weight: 600;
   letter-spacing: -2;
+  line-height: 1.5;
+`;
+
+export const TextHeadBig = styled(TextHead)`
+  font-size: var(--xl-text);
 `;
 
 export const TextCaps = styled.p`
