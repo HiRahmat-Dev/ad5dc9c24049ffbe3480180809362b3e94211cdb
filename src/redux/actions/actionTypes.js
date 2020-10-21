@@ -1,0 +1,8 @@
+export const SET_ITEMS = 'SET_ITEMS';
+export const GET_MENUS = 'GET_MENUS';
+export const SET_APP_BAR_HEIGHT = 'SET_APP_BAR_HEIGHT';
+export const SET_APP_SIZE = 'SET_APP_SIZE';
+export const TOGGLE_MODAL = 'TOGGLE_MODAL';
+export const GET_LOCATION = 'GET_LOCATION';
+export const SET_FILTERED_LOCATION = 'SET_FITERED_LOCATION';
+export const SET_SELECTED_LOCATION = 'SET_SELECTED_LOCATION';
