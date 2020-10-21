@@ -4,9 +4,9 @@ import { MdStar, MdStarHalf, MdAdd } from 'react-icons/md';
 
 import Button from './Button';
 
-import { currencyFormat } from '../utils';
+import { currencyFormat, capitalize } from '../utils';
 
-function Card({ data }) {
+function Card({ data, onAddClick }) {
   return (
     <CardCont>
       <div className="card-image">
@@ -29,7 +29,7 @@ function Card({ data }) {
           </Rating>
           <Title>
             <TextHead>{ data?.title && data.title }</TextHead>
-            <SubTextSmall>by Kulina <strong>&middot;</strong> Uptown { data?.category && data.category }</SubTextSmall>
+            <SubTextSmall>by Kulina <strong>&middot;</strong> Uptown { data?.category && capitalize(data.category) }</SubTextSmall>
           </Title>
         </div>
         <div className="desc-price">
@@ -39,7 +39,8 @@ function Card({ data }) {
           <div className="action">
             <AddButton
               endIcon={<MdAdd />}
-              size="medium"  
+              size="medium"
+              onClick={onAddClick}
             >
               ADD
             </AddButton>

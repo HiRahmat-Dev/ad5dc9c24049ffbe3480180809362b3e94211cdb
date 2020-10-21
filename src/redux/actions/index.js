@@ -1,6 +1,6 @@
 import {
   GET_MENUS,
-  ADD_TO_CART
+  SET_ITEMS
 } from './actionTypes';
 
 export const getMenus = data => ({
@@ -8,7 +8,7 @@ export const getMenus = data => ({
   payload: data
 })
 
-export const addToCart = data => ({
-  type: ADD_TO_CART,
+export const setItems = data => ({
+  type: SET_ITEMS,
   payload: data
 })

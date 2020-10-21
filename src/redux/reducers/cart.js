@@ -1,19 +1,26 @@
 import {
-  ADD_TO_CART
+  SET_ITEMS,
 } from '../actions/actionTypes';
 
 const initialState = {
   items: [],
   count: 0,
-  totalPrices: 0
+  totalPrices: 0,
+  postalFee: true
 }
 
 function cartReducer(state = initialState, action) {
   switch(action.type) {
-    case ADD_TO_CART:
+    case SET_ITEMS:
+
+      let data = [...state.items, action.payload]
       return {
         ...state,
-        menus: action.payload.data
+        items: data,
+        count: data.length,
+        totalPrices: data.reduce((total, value) => {
+          return total + value.price;
+        }, 0)
       }
     default:
       return state;

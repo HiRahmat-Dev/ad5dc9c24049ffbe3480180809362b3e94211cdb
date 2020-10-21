@@ -16,3 +16,8 @@ export const rangeDates = (startDate, endDate) => {
 export const currencyFormat = (value, currency = 'Rp') => {
   return currency + ' ' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+export const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
