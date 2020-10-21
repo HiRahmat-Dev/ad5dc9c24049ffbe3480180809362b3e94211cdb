@@ -4,7 +4,7 @@ import styled, { Container, ContainerFlex, TextHead, TextCaps, TextSmall, TextHe
 import ButtonBase from '@material-ui/core/ButtonBase';
 import moment from 'moment';
 import { FaMapMarkerAlt } from 'react-icons/fa';
-import { setItems, setFilteredLocation, setSelectedLocation, toggleModal } from './redux/actions';
+import { setItems, setSelectedLocation, toggleModal } from './redux/actions';
 
 import AppBar from './components/AppBar';
 import AppBody from './components/AppBody';

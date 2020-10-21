@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { animated, useTransition } from 'react-spring';
 import styled, { TextCaps, TextHead } from './styled-components';
 import { MdArrowBack, MdKeyboardArrowDown } from 'react-icons/md';
 

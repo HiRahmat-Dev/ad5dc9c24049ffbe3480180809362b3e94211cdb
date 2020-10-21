@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { HiChevronRight } from 'react-icons/hi';
